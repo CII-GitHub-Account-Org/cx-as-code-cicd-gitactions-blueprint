@@ -13,7 +13,8 @@ runs:
   using: "composite"
   steps:
     - run: |
-        cd $GITHUB_WORKSPACE/blueprint/genesys-cloud-cx-as-code || terraform workspace new genesys_email_dev
+        cd $GITHUB_WORKSPACE/blueprint/genesys-cloud-cx-as-code
+        terraform workspace new genesys_email_dev
         terraform init 
         terraform apply --auto-approve
         cd $GITHUB_WORKSPACE

@@ -322,7 +322,7 @@ Terraform variables parameterize your scripts. Environment variables are usually
 1. Click **Variables**.
 2. Define the following Terraform variables:
 
-  * `genesys_email_domain` - A globally unique name for your Genesys Cloud email domain name. If you choose a name that exists, then the execution of the CX as Code scripts fails. Remember whatever you pick will be the prefix for your email address. For example, if the value you set here is "genesys_email_dev" and your Genesys Cloud organization is in us-west-2, your generated email address will be "@genesys_email_dev.pure.cloud".
+  * `genesys_email_domain` - A globally unique name for your Genesys Cloud email domain name. If you choose a name that exists, then the execution of the CX as Code scripts fails. Remember whatever you pick will be the prefix for your email address. For example, if the value you set here is "genesys_email_dev" and your Genesys Cloud organization is in us-east-1, your generated email address will be "@genesys_email_dev.pure.cloud".
   * `genesys_email_domain_region` - The suffix for the email domain. Valid values are based on the corresponding AWS regions:
     | Region            	| Domain suffix    	|
     |--------------------	|-----------------	|

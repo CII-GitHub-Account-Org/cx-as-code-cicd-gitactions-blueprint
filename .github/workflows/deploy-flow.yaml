@@ -38,12 +38,12 @@ jobs:
     env:
       GENESYSCLOUD_OAUTHCLIENT_ID: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_ID_DEV }}
       GENESYSCLOUD_OAUTHCLIENT_SECRET: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_SECRET_DEV }}
-      GENESYSCLOUD_API_REGION: "https://api.usw2.pure.cloud"
-      GENESYSCLOUD_REGION: "us-west-2"
-      GENESYSCLOUD_ARCHY_REGION: "usw2.pure.cloud"
+      GENESYSCLOUD_API_REGION: "https://api.use1.pure.cloud"
+      GENESYSCLOUD_REGION: "us-east-1"
+      GENESYSCLOUD_ARCHY_REGION: "use1.pure.cloud"
       GENESYSCLOUD_EMAIL_DOMAIN: "devengagedev"
       GENESYSCLOUD_EMAIL_DOMAIN_REGION: "pure.cloud"
-      TF_WORKSPACE: "dev"
+      TF_WORKSPACE: "genesys_email_dev"
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/genesys-cloud-dev-tools
@@ -53,7 +53,7 @@ jobs:
       - uses: ./.github/actions/genesys-cloud-apply-terraform
       - uses: ./.github/actions/genesys-cloud-publish-archy-flow
         with:
-          architect-flow-path: $GITHUB_WORKSPACE/blueprint/genesys-cloud-architect-flows/EmailComprehendFlow.yaml
+          architect-flow-path: $GITHUB_WORKSPACE/blueprint/genesys-cloud-architect-flows/cicd-sample-flow.yaml
           architect-results-path: $GITHUB_WORKSPACE/output/results.json
       - uses: ./.github/actions/genesys-cloud-create-email-domain-route
 
@@ -71,45 +71,45 @@ jobs:
     env:
       GENESYSCLOUD_OAUTHCLIENT_ID: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_ID_DEV }}
       GENESYSCLOUD_OAUTHCLIENT_SECRET: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_SECRET_DEV }}
-      GENESYSCLOUD_REGION: "us-west-2"
-      GENESYSCLOUD_API_REGION: "https://api.usw2.pure.cloud"
+      GENESYSCLOUD_REGION: "us-east-1"
+      GENESYSCLOUD_API_REGION: "https://api.use1.pure.cloud"
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/genesys-cloud-dev-tools
       - name: Platform tests
         run: python blueprint/scripts/platform_tests.py
 
-  ###
-  #  job: deploy-email-flow-test
-  #
-  #  The deploy-email-flow-test job starts by first setting all of the environment variables specific to the test environment. Secret values
-  #  are pulled directly from the GitHub Actions secrets vaults. Otherwise, all environment variables are set directly in the script.
-  #  Once all of the environment variables are set this job does basically carries out the same steps taken in development environment.
-  #
-  #  Remember our goal is to have our configuration uniformly applied with all of the environment specific values being applied through
-  #  configuration.
-  ###
-  deploy-email-flow-test:
-    runs-on: ubuntu-latest
-    needs: execute-platform-tests
-    env:
-      GENESYSCLOUD_OAUTHCLIENT_ID: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_ID_TEST }}
-      GENESYSCLOUD_OAUTHCLIENT_SECRET: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_SECRET_TEST }}
-      GENESYSCLOUD_API_REGION: "https://api.usw2.pure.cloud"
-      GENESYSCLOUD_REGION: "us-west-2"
-      GENESYSCLOUD_ARCHY_REGION: "usw2.pure.cloud"
-      GENESYSCLOUD_EMAIL_DOMAIN: "devengagetest"
-      GENESYSCLOUD_EMAIL_DOMAIN_REGION: "pure.cloud"
-      TF_WORKSPACE: "test"
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ./.github/actions/genesys-cloud-dev-tools
-      - uses: hashicorp/setup-terraform@v1
-        with:
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-      - uses: ./.github/actions/genesys-cloud-apply-terraform
-      - uses: ./.github/actions/genesys-cloud-publish-archy-flow
-        with:
-          architect-flow-path: $GITHUB_WORKSPACE/blueprint/genesys-cloud-architect-flows/EmailComprehendFlow.yaml
-          architect-results-path: $GITHUB_WORKSPACE/output/results.json
-      - uses: ./.github/actions/genesys-cloud-create-email-domain-route
+  # ###
+  # #  job: deploy-email-flow-test
+  # #
+  # #  The deploy-email-flow-test job starts by first setting all of the environment variables specific to the test environment. Secret values
+  # #  are pulled directly from the GitHub Actions secrets vaults. Otherwise, all environment variables are set directly in the script.
+  # #  Once all of the environment variables are set this job does basically carries out the same steps taken in development environment.
+  # #
+  # #  Remember our goal is to have our configuration uniformly applied with all of the environment specific values being applied through
+  # #  configuration.
+  # ###
+  # deploy-email-flow-test:
+  #   runs-on: ubuntu-latest
+  #   needs: execute-platform-tests
+  #   env:
+  #     GENESYSCLOUD_OAUTHCLIENT_ID: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_ID_TEST }}
+  #     GENESYSCLOUD_OAUTHCLIENT_SECRET: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_SECRET_TEST }}
+  #     GENESYSCLOUD_API_REGION: "https://api.use1.pure.cloud"
+  #     GENESYSCLOUD_REGION: "us-east-1"
+  #     GENESYSCLOUD_ARCHY_REGION: "use1.pure.cloud"
+  #     GENESYSCLOUD_EMAIL_DOMAIN: "devengagetest"
+  #     GENESYSCLOUD_EMAIL_DOMAIN_REGION: "pure.cloud"
+  #     TF_WORKSPACE: "test"
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: ./.github/actions/genesys-cloud-dev-tools
+  #     - uses: hashicorp/setup-terraform@v1
+  #       with:
+  #         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+  #     - uses: ./.github/actions/genesys-cloud-apply-terraform
+  #     - uses: ./.github/actions/genesys-cloud-publish-archy-flow
+  #       with:
+  #         architect-flow-path: $GITHUB_WORKSPACE/blueprint/genesys-cloud-architect-flows/EmailComprehendFlow.yaml
+  #         architect-results-path: $GITHUB_WORKSPACE/output/results.json
+  #     - uses: ./.github/actions/genesys-cloud-create-email-domain-route

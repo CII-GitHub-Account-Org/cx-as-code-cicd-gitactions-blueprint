@@ -7,7 +7,7 @@
         "s3:PutObject"
       ],
       "Resource": [
-        "arn:aws:s3:::inintca-test-bucket/*"
+        "arn:aws:s3:::cii-dev-genesys-ci-cd-deployment/*"
       ],
       "Effect": "Allow"
     },
@@ -16,7 +16,7 @@
         "s3:ListBucket"
       ],
       "Resource": [
-        "arn:aws:s3:::nintca-test-bucket"
+        "arn:aws:s3:::cii-dev-genesys-ci-cd-deployment"
       ],
       "Effect": "Allow"
     }

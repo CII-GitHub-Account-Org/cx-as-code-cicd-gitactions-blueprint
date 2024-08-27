@@ -1,0 +1,500 @@
+digitalBot:
+  name: cicd-sample-flow
+  description: This bot created for Genesys AI sample bot for demo
+  division: Home
+  startUpRef: "/digitalBot/bots/bot[Initial Greeting_10]"
+  defaultLanguage: en-us
+  supportedLanguages:
+    en-us:
+      defaultLanguageSkill:
+        noValue: true
+  variables:
+    - decimalVariable:
+        name: Slot.AccountNumber
+        initialValue:
+          noValue: true
+        isInput: true
+        isOutput: true
+    - decimalVariable:
+        name: Slot.Last4CreditCardNumber
+        initialValue:
+          noValue: true
+        isInput: true
+        isOutput: true
+    - decimalVariable:
+        name: Slot.TransferAmount
+        initialValue:
+          noValue: true
+        isInput: true
+        isOutput: true
+  settingsErrorHandling:
+    errorHandling:
+      exit:
+        none: true
+    enableAgentEscalation:
+      lit: true
+    errorEventHandover:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Sorry, an error occurred. One moment, please, while I put you through to someone who can help.\")))"
+    agentEscalationConfirmation:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"You want to speak to an advisor. Is that correct?\")))"
+    agentEscalationHandover:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"One moment, please, and I will put you through to someone.\")))"
+    recognitionFailureEventHandover:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Sorry, I'm having trouble understanding you. One moment, please, while I put you through to someone who can help.\")))"
+    recognitionFailureEventHandling:
+      exit:
+        none: true
+  tasks:
+    - task:
+        name: Agent
+        refId: Agent_48
+        actions:
+          - communicate:
+              name: Communicate
+              communication:
+                exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"We are trying to connect to agent\")))"
+          - disconnect:
+              name: Disconnect
+    - task:
+        name: Credit Card
+        refId: Credit Card_49
+        actions:
+          - communicate:
+              name: Communicate
+              communication:
+                exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Wellocome to credit card support team!\")))"
+          - digitalMenu:
+              name: Digital Menu
+              question:
+                exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"What would you like to do with Credit Card?\")))"
+              noMatch:
+                exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Tell me again what you would like to do.\")))"
+              selection:
+                noValue: true
+              knowledgeSearchResult:
+                noValue: true
+              chooser:
+                lit:
+                  presentation:
+                    lit: quickReplies
+                  carousel:
+                    lit:
+                      cards:
+                        lit: []
+                  quickReplies:
+                    lit:
+                      buttons:
+                        lit:
+                          - lit:
+                              label:
+                                noValue: true
+                              value:
+                                lit: Outstanding balance
+                              type:
+                                lit: postback
+                          - lit:
+                              label:
+                                noValue: true
+                              value:
+                                lit: Bock my card
+                              type:
+                                lit: postback
+              outputs:
+                maxNoInputs:
+                  enabled: true
+                  actions:
+                    - communicate:
+                        name: Communicate
+                        communication:
+                          exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Thank you for banking with us. Please try again.\")))"
+                paths:
+                  - path:
+                      name: Outstanding balance
+                      actions:
+                        - communicate:
+                            name: Communicate
+                            communication:
+                              exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Ok, Outstanding Balance.\")))"
+                        - communicate:
+                            name: Communicate
+                            communication:
+                              exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Your outstanding balance for the credit card ending with 2345 is 123 dollars. Your next billing date is 5th of july 2024.\")))"
+                  - path:
+                      name: Bock my card
+                      actions:
+                        - communicate:
+                            name: Communicate
+                            communication:
+                              exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Ok, Bock  Card.\")))"
+                        - askForSlot:
+                            name: Ask for Slot
+                            slot:
+                              name: Last4CreditCardNumber
+                            question:
+                              exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Please enter last 4 digits of your credit card numbe?\")))"
+                            customValidation:
+                              noValue: true
+                            confirmationMode:
+                              lit: never
+                            noMatch:
+                              exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Please give me the (please put your slot name here)\")))"
+                            outputs:
+                              maxNoInputs:
+                                enabled: false
+                        - communicate:
+                            name: Communicate
+                            communication:
+                              exp: "MakeCommunication(\n  ToCommunication(MakeCommunication(\"Ok, You want to block your credit card ending with \", Slot.Last4CreditCardNumber, \", is it correct?\")))"
+                        - communicate:
+                            name: Communicate
+                            communication:
+                              exp: "MakeCommunication(\n  ToCommunication(MakeCommunication(\"As per your request your credit card number ending with \", Slot.Last4CreditCardNumber, \" is blocked successfully.\")))"
+          - disconnect:
+              name: Disconnect
+    - task:
+        name: Account Balance
+        refId: Account Balance_50
+        actions:
+          - disconnect:
+              name: Disconnect
+    - task:
+        name: Knowledge
+        refId: Knowledge_54
+        actions:
+          - disconnect:
+              name: Disconnect
+  settingsBotFlow:
+    intentSettings:
+      - intent:
+          confirmation:
+            exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"I think you want to Account Balance, is that correct?\")))"
+          name: Account Balance
+          task:
+            name: Account Balance
+      - intent:
+          confirmation:
+            exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"I think you want to Credit Card, is that correct?\")))"
+          name: Credit Card
+          task:
+            name: Credit Card
+      - intent:
+          confirmation:
+            exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"I think you want to Agent, is that correct?\")))"
+          name: Agent
+          task:
+            name: Agent
+  settingsUserInput:
+    noMatchesMax:
+      lit: 3
+    noInputsMax:
+      lit: 3
+    noInputsTimeout:
+      lit:
+        minutes: 1
+    endOfSessionMessage:
+      exp: "MakeCommunication(\n  ToCommunication(\"I have not heard from you in a while, so I am closing this chat, please come back if you need my help again. Thank you.\"))"
+    confirmationRejectionsMax:
+      lit: 3
+    collectionLowConfidenceThreshold:
+      lit: 20
+    collectionHighConfidenceThreshold:
+      lit: 70
+    confirmationLowConfidenceThreshold:
+      lit: 40
+    noMatchApology:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Sorry.\")))"
+    noInputApology:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Sorry, I didn't receive any input from you.\")))"
+    noToConfirmationApology:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"My mistake.\")))"
+    confirmationNoMatchApology:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Sorry, please input \\\"Yes\\\" or \\\"No\\\".\")))"
+    confirmationNoInputApology:
+      exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Sorry, I didn't receive any input from you.  Please input \\\"Yes\\\" or \\\"No\\\".\")))"
+  settingsKnowledge:
+    CII-Genesys-AI-Sample-Demo:
+      maxNumOfAnswersReturned:
+        lit: 3
+      knowledgeInitialResponseFollowup:
+        exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"I hope I answered your question.  You can ask anything else you might want to know.\")))"
+      knowledgePathMode:
+        lit: task
+      knowledgePath:
+        targetTaskRef: "/digitalBot/tasks/task[Knowledge_54]"
+      knowledgeInitialResponseSingle:
+        noValue: true
+      knowledgeInitialResponseMulti:
+        exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"To help me clarify your goal, please choose a number from the following list:\")))"
+      knowledgeInitialResponseMultiRetry:
+        exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Please choose a number, for example '1'.\\nHere's the list of options again:\")))"
+      knowledgeNoMatch:
+        exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"None of these\")))"
+      sendKnowledgeFeedback:
+        lit: true
+      knowledgeConfirmation:
+        exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Did this answer your question?\")))"
+      responseBias:
+        lit: neutral
+      knowledgeSettingsMode:
+        lit: standard
+  bots:
+    - bot:
+        name: Initial Greeting
+        refId: Initial Greeting_10
+        actions:
+          - communicate:
+              name: Communicate
+              communication:
+                exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Welcome to CII Bank Demo\")))"
+          - digitalMenu:
+              name: Digital Menu
+              question:
+                exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"How Can I help you today? You can say Savings account, Credit card, talk to Agent\")))"
+              noMatch:
+                exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Tell me again how Can I help you today? You can say Savings account, Credit card, talk to Agent.\")))"
+              selection:
+                noValue: true
+              knowledgeSearchResult:
+                noValue: true
+              chooser:
+                lit:
+                  presentation:
+                    lit: quickReplies
+                  carousel:
+                    lit:
+                      cards:
+                        lit: []
+                  quickReplies:
+                    lit:
+                      buttons:
+                        lit:
+                          - lit:
+                              label:
+                                noValue: true
+                              value:
+                                lit: Saavings account
+                              type:
+                                lit: postback
+                          - lit:
+                              label:
+                                noValue: true
+                              value:
+                                lit: Credit card
+                              type:
+                                lit: postback
+                          - lit:
+                              label:
+                                noValue: true
+                              value:
+                                lit: Connect to agent
+                              type:
+                                lit: postback
+              outputs:
+                maxNoInputs:
+                  enabled: true
+                  actions:
+                    - communicate:
+                        name: Communicate
+                        communication:
+                          exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Thank you for banking with us. Please try again.\")))"
+                paths:
+                  - path:
+                      name: Saavings account
+                      actions:
+                        - communicate:
+                            name: Communicate
+                            communication:
+                              exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Ok, Saving Account.\")))"
+                        - digitalMenu:
+                            name: Digital Menu
+                            question:
+                              exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"What would you like to do with Savings Account?\")))"
+                            noMatch:
+                              exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Tell me again what you would like to do.\")))"
+                            selection:
+                              noValue: true
+                            knowledgeSearchResult:
+                              noValue: true
+                            chooser:
+                              lit:
+                                presentation:
+                                  lit: quickReplies
+                                carousel:
+                                  lit:
+                                    cards:
+                                      lit: []
+                                quickReplies:
+                                  lit:
+                                    buttons:
+                                      lit:
+                                        - lit:
+                                            label:
+                                              noValue: true
+                                            value:
+                                              lit: Account balance
+                                            type:
+                                              lit: postback
+                                        - lit:
+                                            label:
+                                              noValue: true
+                                            value:
+                                              lit: Fund transfer
+                                            type:
+                                              lit: postback
+                            outputs:
+                              maxNoInputs:
+                                enabled: true
+                                actions:
+                                  - communicate:
+                                      name: Communicate
+                                      communication:
+                                        exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Thank you for banking with us. Please try again.\")))"
+                              paths:
+                                - path:
+                                    name: Account balance
+                                    actions:
+                                      - communicate:
+                                          name: Communicate
+                                          communication:
+                                            exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Ok, Account Balance.\")))"
+                                      - communicate:
+                                          name: Communicate
+                                          communication:
+                                            exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Your current account balance is 1000 dollars and 10 Cents.\")))"
+                                - path:
+                                    name: Fund transfer
+                                    actions:
+                                      - communicate:
+                                          name: Communicate
+                                          communication:
+                                            exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Ok, Fund Transfer.\")))"
+                                      - askForSlot:
+                                          name: Ask for Slot
+                                          slot:
+                                            name: AccountNumber
+                                          question:
+                                            exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Please enter the 10 digit beneficiary account number?\")))"
+                                          customValidation:
+                                            noValue: true
+                                          confirmationMode:
+                                            lit: never
+                                          noMatch:
+                                            exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Please give me the (please put your slot name here)\")))"
+                                          outputs:
+                                            maxNoInputs:
+                                              enabled: false
+                                      - askForSlot:
+                                          name: Ask for Slot
+                                          slot:
+                                            name: TransferAmount
+                                          question:
+                                            exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Please enter the amount you would like to transfer?\")))"
+                                          customValidation:
+                                            noValue: true
+                                          confirmationMode:
+                                            lit: never
+                                          noMatch:
+                                            exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Please give me the (please put your slot name here)\")))"
+                                          outputs:
+                                            maxNoInputs:
+                                              enabled: false
+                                      - communicate:
+                                          name: Communicate
+                                          communication:
+                                            exp: "MakeCommunication(\n  ToCommunication(MakeCommunication(\"Your fund tranfer request of \", Slot.TransferAmount, \" dollars to \", Slot.AccountNumber, \" is completed successfully. The transaction number is 837352.\")))"
+                  - path:
+                      name: Credit card
+                      actions:
+                        - communicate:
+                            name: Communicate
+                            communication:
+                              exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Ok, Credit Card.\")))"
+                        - jumpToTask:
+                            name: Jump to Reusable Task
+                            targetTaskRef: "/digitalBot/tasks/task[Credit Card_49]"
+                  - path:
+                      name: Connect to agent
+                      actions:
+                        - communicate:
+                            name: Communicate
+                            communication:
+                              exp: "MakeCommunication(\n  ToCommunication(ToCommunication(\"Please wait while I transfer you to next available agent to assist you.\")))"
+                        - jumpToTask:
+                            name: Jump to Reusable Task
+                            targetTaskRef: "/digitalBot/tasks/task[Agent_48]"
+          - exitBotFlow:
+              name: Exit Bot Flow
+  settingsNaturalLanguageUnderstanding:
+    nluDomainVersion:
+      intents:
+        - utterances:
+            - segments:
+                - text: How much is in my account
+              id: 966e189f-8f6f-4cab-a8e9-e3d3b507913b
+            - segments:
+                - text: What is latest balance in my account
+              id: 86a4f997-d110-47ed-9f73-bcd8aa7d5b45
+            - segments:
+                - text: Can I get my account balance
+              id: bbc4ed39-edfe-4ecd-aab8-cd0da226f6d2
+            - segments:
+                - text: Account Balance
+              id: 95f4ed8d-e6a6-4ec5-9c6a-75a301f93efe
+            - segments:
+                - text: Help me with my account balance
+              id: 81684a74-e9be-45e5-8aee-80382b08e651
+            - segments:
+                - text: I want to know my account balance
+              id: 769b56ba-6401-4919-b99e-628d4955c051
+          entityNameReferences: []
+          id: 0763ac1b-48db-4f58-9421-50aee66d17a4
+          name: Account Balance
+        - utterances:
+            - segments:
+                - text: Please connect with me an agent
+              id: 8b5176fe-973b-440b-b32d-45dcf39a0522
+            - segments:
+                - text: I want to connect to an agent
+              id: 97173a02-87bb-4f07-baa8-375ad06fb338
+          entityNameReferences: []
+          id: 29be9cf2-5edd-4d37-b50d-9577e1ae98ac
+          name: Agent
+        - utterances:
+            - segments:
+                - text: What is the current credit balance
+              id: e5dc0554-03fa-46e8-a27a-05dcad0c78b1
+            - segments:
+                - text: How do I activate my new credit card
+              id: 8bebc0c7-3071-4932-927f-691dfec9fa94
+            - segments:
+                - text: I would like to activate my card
+              id: 624196d9-47dd-453c-b758-c3f19c534c8e
+            - segments:
+                - text: What are the interest charges on my credit card
+              id: d1878dec-115a-4510-8411-426e4aa18108
+            - segments:
+                - text: I want to know the balance of my credit card
+              id: 5abe26ad-3591-48d8-8a04-51819045fb8a
+          entityNameReferences: []
+          id: 6ef4b0b8-a40e-4ecc-b9fd-9040f3d80b73
+          name: Credit Card
+      entities:
+        - name: AccountNumber
+          type: "builtin:number"
+        - name: Last4CreditCardNumber
+          type: "builtin:number"
+        - name: TransferAmount
+          type: "builtin:number"
+      entityTypes:
+        - name: Number
+          description: The description of the Entity Type "Number"
+          mechanism:
+            type: List
+            restricted: true
+            items:
+              - value: "2344"
+                synonyms: []
+              - value: "22"
+                synonyms: []
+      language: en-us
+    mutedUtterances: []

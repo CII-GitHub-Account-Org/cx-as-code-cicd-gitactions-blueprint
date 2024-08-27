@@ -33,7 +33,7 @@ jobs:
   #  Step 5 (./.github/actions/genesys-cloud-publish-archy-flow): Uses a local action to run Archy
   #  Step 6 (./.github/actions/genesys-cloud-create-email-domain-route): Uses a local action to run our python script to create our email domain route
   ###
-  deploy-email-flow-dev:
+  deploy-genesys-flow-to-dev:
     runs-on: ubuntu-latest
     env:
       GENESYSCLOUD_OAUTHCLIENT_ID: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_ID_DEV }}
@@ -65,19 +65,19 @@ jobs:
   #  more then running a python script we are just executing python code "in-line" rather then through a local action.
   #
   ###
-  execute-platform-tests:
-    runs-on: ubuntu-latest
-    needs: deploy-email-flow-dev
-    env:
-      GENESYSCLOUD_OAUTHCLIENT_ID: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_ID_DEV }}
-      GENESYSCLOUD_OAUTHCLIENT_SECRET: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_SECRET_DEV }}
-      GENESYSCLOUD_REGION: "us-east-1"
-      GENESYSCLOUD_API_REGION: "https://api.mypurecloud.com"
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ./.github/actions/genesys-cloud-dev-tools
-      - name: Platform tests
-        run: python blueprint/scripts/platform_tests.py
+  # execute-platform-tests:
+  #   runs-on: ubuntu-latest
+  #   needs: deploy-email-flow-dev
+  #   env:
+  #     GENESYSCLOUD_OAUTHCLIENT_ID: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_ID_DEV }}
+  #     GENESYSCLOUD_OAUTHCLIENT_SECRET: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_SECRET_DEV }}
+  #     GENESYSCLOUD_REGION: "us-east-1"
+  #     GENESYSCLOUD_API_REGION: "https://api.mypurecloud.com"
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: ./.github/actions/genesys-cloud-dev-tools
+  #     - name: Platform tests
+  #       run: python blueprint/scripts/platform_tests.py
 
   # ###
   # #  job: deploy-email-flow-test

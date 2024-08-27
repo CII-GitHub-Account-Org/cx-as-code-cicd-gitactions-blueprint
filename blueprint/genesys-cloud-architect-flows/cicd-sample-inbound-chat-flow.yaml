@@ -1,5 +1,5 @@
 inboundChat:
-  name: cicd-sample-inbound-chat-flow
+  name: cicd-sample-inbound-chat-flow-2
   division: Home
   startUpRef: "/inboundChat/states/state[Initial State_10]"
   defaultLanguage: en-us

@@ -14,8 +14,9 @@ runs:
   steps:
     - run: |
         cd $GITHUB_WORKSPACE/blueprint/genesys-cloud-cx-as-code
-        terraform workspace new genesys_email_dev
-        terraform init 
+        terraform init
+        terraform workspace select dev || terraform workspace new dev
+        terraform init
         terraform apply --auto-approve
         cd $GITHUB_WORKSPACE
       shell: bash

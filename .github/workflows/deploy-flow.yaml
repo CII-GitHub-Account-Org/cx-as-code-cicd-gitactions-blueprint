@@ -38,9 +38,9 @@ jobs:
     env:
       GENESYSCLOUD_OAUTHCLIENT_ID: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_ID_DEV }}
       GENESYSCLOUD_OAUTHCLIENT_SECRET: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_SECRET_DEV }}
-      GENESYSCLOUD_API_REGION: "https://api.use1.pure.cloud"
+      GENESYSCLOUD_API_REGION: "https://api.mypurecloud.com"
       GENESYSCLOUD_REGION: "us-east-1"
-      GENESYSCLOUD_ARCHY_REGION: "use1.pure.cloud"
+      GENESYSCLOUD_ARCHY_REGION: "mypurecloud.com"
       GENESYSCLOUD_EMAIL_DOMAIN: "genesys_email_dev"
       GENESYSCLOUD_EMAIL_DOMAIN_REGION: "pure.cloud"
       TF_WORKSPACE: "dev"
@@ -72,7 +72,7 @@ jobs:
       GENESYSCLOUD_OAUTHCLIENT_ID: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_ID_DEV }}
       GENESYSCLOUD_OAUTHCLIENT_SECRET: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_SECRET_DEV }}
       GENESYSCLOUD_REGION: "us-east-1"
-      GENESYSCLOUD_API_REGION: "https://api.use1.pure.cloud"
+      GENESYSCLOUD_API_REGION: "https://api.mypurecloud.com"
     steps:
       - uses: actions/checkout@v2
       - uses: ./.github/actions/genesys-cloud-dev-tools
@@ -95,9 +95,9 @@ jobs:
   #   env:
   #     GENESYSCLOUD_OAUTHCLIENT_ID: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_ID_TEST }}
   #     GENESYSCLOUD_OAUTHCLIENT_SECRET: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_SECRET_TEST }}
-  #     GENESYSCLOUD_API_REGION: "https://api.use1.pure.cloud"
+  #     GENESYSCLOUD_API_REGION: "https://api.mypurecloud.com"
   #     GENESYSCLOUD_REGION: "us-east-1"
-  #     GENESYSCLOUD_ARCHY_REGION: "use1.pure.cloud"
+  #     GENESYSCLOUD_ARCHY_REGION: "usw2.pure.cloud"
   #     GENESYSCLOUD_EMAIL_DOMAIN: "devengagetest"
   #     GENESYSCLOUD_EMAIL_DOMAIN_REGION: "pure.cloud"
   #     TF_WORKSPACE: "test"

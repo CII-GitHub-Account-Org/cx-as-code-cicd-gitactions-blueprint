@@ -3,7 +3,7 @@
 terraform {
 
   backend "remote" {
-    organization = "thoughtmechanix"
+    organization = "cii-dev-organization"
 
     workspaces {
       prefix = "genesys_email_"

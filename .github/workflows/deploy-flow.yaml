@@ -45,6 +45,6 @@ jobs:
       - uses: ./.github/actions/genesys-cloud-apply-terraform
       - uses: ./.github/actions/genesys-cloud-publish-archy-flow
         with:
-          architect-flow-path: $GITHUB_WORKSPACE/blueprint/genesys-cloud-architect-flows/cicd-sample-digital-bot-flow.yaml
+          architect-flow-path: $GITHUB_WORKSPACE/blueprint/genesys-cloud-architect-flows/cicd-sample-bot-flow.yaml
           architect-results-path: $GITHUB_WORKSPACE/output/results.json
    

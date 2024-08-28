@@ -35,8 +35,6 @@ jobs:
       GENESYSCLOUD_API_REGION: "https://api.mypurecloud.com"
       GENESYSCLOUD_REGION: "us-east-1"
       GENESYSCLOUD_ARCHY_REGION: "mypurecloud.com"
-      # GENESYSCLOUD_EMAIL_DOMAIN: "genesys_email_dev"
-      # GENESYSCLOUD_EMAIL_DOMAIN_REGION: "pure.cloud"
       TF_WORKSPACE: "dev"
     steps:
       - uses: actions/checkout@v2

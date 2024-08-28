@@ -1,5 +1,5 @@
 digitalBot:
-  name: cicd-sample-digital-bot-flow
+  name: cicd-sample-digital-bot-flow-1
   description: This bot created for Genesys AI sample bot for demo
   division: Home
   startUpRef: "/digitalBot/bots/bot[Initial Greeting_10]"

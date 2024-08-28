@@ -6,7 +6,7 @@ terraform {
     organization = "cii-dev-organization"
 
     workspaces {
-      prefix = "genesys_email_"
+      prefix = "cii-dev-genesys-cicd-deployment-"
     }
   }
 

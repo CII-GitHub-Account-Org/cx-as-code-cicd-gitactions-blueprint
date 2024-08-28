@@ -34,8 +34,8 @@ jobs:
       GENESYSCLOUD_OAUTHCLIENT_SECRET: ${{ secrets.GENESYSCLOUD_OAUTHCLIENT_SECRET_DEV }}
       GENESYSCLOUD_API_REGION: "https://api.mypurecloud.com"
       GENESYSCLOUD_REGION: "us-east-1"
-      GENESYSCLOUD_ARCHY_REGION: "mypurecloud.com"
-      GENESYSCLOUD_EMAIL_DOMAIN: "genesys_email_dev"
+      # GENESYSCLOUD_ARCHY_REGION: "mypurecloud.com"
+      # GENESYSCLOUD_EMAIL_DOMAIN: "genesys_email_dev"
       GENESYSCLOUD_EMAIL_DOMAIN_REGION: "pure.cloud"
       TF_WORKSPACE: "dev"
     steps:
@@ -47,6 +47,6 @@ jobs:
       - uses: ./.github/actions/genesys-cloud-apply-terraform
       - uses: ./.github/actions/genesys-cloud-publish-archy-flow
         with:
-          architect-flow-path: $GITHUB_WORKSPACE/blueprint/genesys-cloud-architect-flows/cicd-sample-inbound-chat-flow.yaml
+          architect-flow-path: $GITHUB_WORKSPACE/blueprint/genesys-cloud-architect-flows/cicd-sample-digital-bot-flow.yaml
           architect-results-path: $GITHUB_WORKSPACE/output/results.json
    
